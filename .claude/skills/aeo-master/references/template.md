@@ -977,31 +977,31 @@ Every mined question goes through the 4 AEO criteria before entering the product
 **Overall visibility (weekly pull):**
 ```bash
 curl "https://api.scrunchai.com/v1/{{workspace_id}}/query?fields=date_week,brand_presence_percentage,brand_position_score,brand_sentiment_score&start_date={{measurement_start_date}}&end_date={{measurement_end_date}}" \
-  -H "Authorization: Bearer $SCRUNCH_API_KEY"
+  -H "Authorization: Bearer $SCRUNCH_API_TOKEN"
 ```
 
 **Visibility by platform:**
 ```bash
 curl "https://api.scrunchai.com/v1/{{workspace_id}}/query?fields=ai_platform,brand_presence_percentage,brand_position_score,brand_sentiment_score&start_date={{measurement_start_date}}&end_date={{measurement_end_date}}" \
-  -H "Authorization: Bearer $SCRUNCH_API_KEY"
+  -H "Authorization: Bearer $SCRUNCH_API_TOKEN"
 ```
 
 **Visibility by stage:**
 ```bash
 curl "https://api.scrunchai.com/v1/{{workspace_id}}/query?fields=stage,brand_presence_percentage,brand_position_score,brand_sentiment_score&start_date={{measurement_start_date}}&end_date={{measurement_end_date}}" \
-  -H "Authorization: Bearer $SCRUNCH_API_KEY"
+  -H "Authorization: Bearer $SCRUNCH_API_TOKEN"
 ```
 
 **Competitor comparison:**
 ```bash
 curl "https://api.scrunchai.com/v1/{{workspace_id}}/query?fields=competitor_name,competitor_presence_percentage,competitor_position_score,competitor_sentiment_score&start_date={{measurement_start_date}}&end_date={{measurement_end_date}}" \
-  -H "Authorization: Bearer $SCRUNCH_API_KEY"
+  -H "Authorization: Bearer $SCRUNCH_API_TOKEN"
 ```
 
 **Response-level data for prompt analysis:**
 ```bash
 curl "https://api.scrunchai.com/v1/{{workspace_id}}/responses?start_date={{measurement_start_date}}&end_date={{measurement_end_date}}&limit=100" \
-  -H "Authorization: Bearer $SCRUNCH_API_KEY"
+  -H "Authorization: Bearer $SCRUNCH_API_TOKEN"
 ```
 
 ---

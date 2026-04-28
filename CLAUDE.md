@@ -44,3 +44,14 @@ The report saves to `outputs/aeo-master-YYYY-MM.md`. It includes:
 Edit `config/company.md` with your company details before running. The more complete your config, the better the output.
 
 If you have CRM and call recording access, the skill will pull data automatically. If you don't, fill in the "Competitive Win/Loss Data" section of the config manually with what you know from your sales team.
+
+## Reference Files
+
+The `.claude/skills/aeo-master/references/` directory contains research data and frameworks that the skill reads during execution. These include citation efficiency data from the Trakkr Study 006 (337K citations, 882 brands), question mining playbooks, technical foundations for AI visibility, and the document template. Do not delete or modify these files.
+
+## Important
+
+- The Scrunch API token must be set as `SCRUNCH_API_TOKEN` in your environment
+- If using Gong, set `GONG_ACCESS_KEY` and `GONG_ACCESS_SECRET` in your environment
+- If using Fathom, the MCP server handles auth via OAuth (no env vars needed)
+- Google Doc export is not available in this repo. Output is markdown only.

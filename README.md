@@ -55,7 +55,7 @@ See `examples/stay-aeo-master.md` for a real report produced for a Shopify subsc
 
 ## How Long Does It Take?
 
-20-30 minutes with CRM/call recording integration. 15-20 minutes without. Most of the time is the Firecrawl site scrape and the strategic analysis pull.
+15-20 minutes without CRM integration (Scrunch + site audit only). 30-45 minutes with CRM and call recording integration (the strategic analysis adds time for CRM queries and transcript mining). Most of the time is the Firecrawl site scrape and the strategic analysis data pull.
 
 ## What This Doesn't Do
 

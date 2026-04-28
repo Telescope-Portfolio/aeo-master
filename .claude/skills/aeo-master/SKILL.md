@@ -587,6 +587,21 @@ After saving, tell the user:
 
 ---
 
+## Reference Files
+
+Read these files BEFORE producing the corresponding sections. They contain research data, scoring frameworks, and the document template that grounds the output in evidence rather than generic advice.
+
+| File | When to Read | What It Contains |
+|------|-------------|-----------------|
+| **[references/template.md](references/template.md)** | Phase 6 (document assembly) | The 16-section document template with `{{variable}}` placeholders. Use this as the structural backbone. |
+| **[references/scoring-rubric.md](references/scoring-rubric.md)** | Phase 3 (site audit) | Question quality rating criteria (Strong/Adequate/Weak), intent coverage map, technical scorecard definitions, gap categorization rules, citation efficiency data. |
+| **[references/citation-efficiency.md](references/citation-efficiency.md)** | Phase 4 (gap analysis), Phase 6 (content plan) | Full Trakkr Study 006 dataset: citation efficiency by page type (blog 1.4x, service/use-case 1.9x, product 0.5x, FAQ 0.2x, review 4.8x, about 4.6x). Use when recommending which page type to use for each content piece. |
+| **[references/question-sources.md](references/question-sources.md)** | Phase 5 (strategic layer, if no CRM data) | Question mining playbook: how to extract buyer questions from sales calls, support tickets, G2 reviews, Reddit, LinkedIn. Use to populate the Question Mining Playbook section. |
+| **[references/answer-engine.md](references/answer-engine.md)** | Phase 6 (answer ownership map, content plan) | How to operationalize questions into an answer system: canonical answers, FAQ hubs, comparison content, content production tracks (BOFU human-written, MOFU AI-assisted). |
+| **[references/technical-foundations.md](references/technical-foundations.md)** | Phase 3 (technical scorecard) | Schema markup implementation (with JSON-LD examples), AI crawler access configuration, content structure for AI citation, entity signals, platform-specific technical notes. |
+
+---
+
 ## Quality Checks
 
 Before finalizing the document, verify:

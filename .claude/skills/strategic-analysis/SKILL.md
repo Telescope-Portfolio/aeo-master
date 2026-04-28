@@ -30,7 +30,7 @@ This skill is **CRM-agnostic** (Salesforce or HubSpot) and **call-recorder-agnos
 | `--enrich` | false | Enable Revelio Labs enrichment via Snowflake MCP (adds headcount, growth, industry data) |
 | `--skip-calls` | false | Skip live call recorder API calls; use only exported files |
 | `--skip-ml` | false | Skip XGBoost predictive modeling |
-| `--skip-gdoc` | false | Skip Google Doc creation |
+| `--skip-gdoc` | true | Skip Google Doc creation (requires gws CLI, not included in this repo) |
 
 **Announce:** "Running `/strategic-analysis` for {company} -- pulling CRM data, call transcripts, and interview evidence."
 
@@ -67,23 +67,26 @@ These rules apply to EVERY analysis module and EVERY finding in the report. Viol
 
 ### 0a: Read Company Config
 
-Read `~/.claude/skills/strategic-analysis/companies.json` and look up the `--company` value (case-insensitive match).
+Read `.claude/skills/strategic-analysis/companies.json` (relative to project root) and look up the `--company` value (case-insensitive match).
 
 ### 0b: Company Not Found
 
-If the company is not in companies.json, stop and say:
+If the company is not in companies.json, ask the user:
 
-> "{Company}" isn't configured yet. To add it:
+> "{Company}" isn't configured yet. I need to set up your CRM connection.
 >
-> **For Salesforce:**
-> 1. Connect: `sf org login web --alias {company_lower}@telescopepartners.com`
-> 2. Add an entry to `~/.claude/skills/strategic-analysis/companies.json` (copy the Stay entry as a template, set `crm.type` to `"salesforce"`, set `crm.field_mapping` to `"auto"` for first-run discovery)
->
-> **For HubSpot:**
-> 1. Ensure HubSpot MCP is configured with a private app token
-> 2. Add an entry with `crm.type` set to `"hubspot"` and `crm.field_mapping` set to `"auto"`
->
-> Then run `/strategic-analysis --company {Company}` again.
+> 1. Which CRM do you use? (Salesforce or HubSpot)
+> 2. If Salesforce: have you already run `sf org login web`? (See docs/setup-guide.md Step 5)
+> 3. If HubSpot: is the HubSpot MCP server configured? (See docs/setup-guide.md Step 5)
+
+Once the user confirms their CRM is connected, create a new entry in `.claude/skills/strategic-analysis/companies.json` with:
+- `crm.type` set to `"salesforce"` or `"hubspot"`
+- `crm.sf_org` set to the Salesforce org alias (if Salesforce)
+- `crm.field_mapping` set to `"auto"` (the skill will discover fields automatically)
+- `call_recorder.type` set to `"gong"`, `"fathom"`, or `"none"`
+- `portfolio_path` set to `"./"`
+
+Then continue to Step 0c.
 
 ### 0c: Check CRM Connection
 
@@ -93,15 +96,15 @@ If the company is not in companies.json, stop and say:
 
 ### 0d: Check Call Recorder
 
-**Gong:** Run `source ~/.env` and check `GONG_API_KEY` and `GONG_API_SECRET` exist. If missing and `--skip-calls` is not set, warn and auto-enable `--skip-calls`.
+**Gong:** Run `source ~/.zshrc 2>/dev/null; source ~/.env 2>/dev/null` and check `GONG_ACCESS_KEY` and `GONG_ACCESS_SECRET` exist. If missing and `--skip-calls` is not set, warn and auto-enable `--skip-calls`.
 
-**Fathom:** Run `source ~/.env` and check `FATHOM_API_KEY` exists. If missing and `--skip-calls` is not set, warn and auto-enable `--skip-calls`.
+**Fathom:** Run `source ~/.zshrc 2>/dev/null; source ~/.env 2>/dev/null` and check `FATHOM_API_KEY` exists. If missing and `--skip-calls` is not set, warn and auto-enable `--skip-calls`.
 
 **Manual:** No check needed. User will paste transcripts during Agent 2.
 
 ### 0e: Check Portfolio Path
 
-Verify `portfolio_path` from config exists. Check for `knowledge/` and `deliverables/` subdirectories. Create `deliverables/` if missing.
+Verify `portfolio_path` from config exists. If `portfolio_path` is `"./"` (standalone repo mode), use `outputs/` as the output directory. Otherwise check for `knowledge/` and `deliverables/` subdirectories and create `deliverables/` if missing.
 
 ### 0f: Check Python Dependencies (if --skip-ml not set)
 
@@ -122,23 +125,9 @@ Verify Snowflake MCP tools are available by checking for `mcp__snowflake__run_sn
 
 ---
 
-## Step 0.5: Feature Intel Check (Optional)
+## Step 0.5: Feature Intel (Skipped in standalone mode)
 
-Before pulling CRM data, ask the user:
-
-> "Do you want to run `/feature-intel` to augment the competitive intelligence and feature gap analysis with live-scraped product data from each competitor's website and help center? This significantly improves feature gap accuracy — it catches features that exist but aren't marketed, confirms which gaps are real vs. misidentified, and adds help center depth as a feature maturity signal. Adds ~10-15 minutes but generates a cached `features.json` per company so future runs skip re-scraping."
-
-**If yes:**
-
-1. Identify the top 2-3 competitors from the user (or note you'll confirm after CRM data is pulled in Step 4D)
-2. Run: `/feature-intel [portfolio company] vs [competitor1] vs [competitor2] --portfolio [portfolio company]`
-3. The report and per-company feature caches are saved to `~/Desktop/feature-intel/<slug>/`
-4. A knowledge file is also saved to `{portfolio_path}/knowledge/feature-comparison-YYYY-MM.md`
-5. After completion, read that knowledge file — it becomes an additional data source for Steps 4D and 4G
-
-**If no:** Skip and proceed to Step 1. The analysis will rely solely on CRM fields, call transcripts, and interview evidence for feature gap and competitive claims.
-
-**If feature intel was run previously (cached):** Check whether `{portfolio_path}/knowledge/feature-comparison-*.md` already exists. If it does, ask: "I found a feature comparison from [date]. Do you want to use this or run a fresh scrape?" Use the existing file unless the user wants a refresh.
+The `/feature-intel` skill is not included in this repo. The analysis will rely on CRM fields, call transcripts, and interview evidence for feature gap and competitive claims. Proceed to Step 1.
 
 ---
 
@@ -250,8 +239,8 @@ If <30 deals, warn: "Small sample size ({N} deals). Analysis will have limited s
 
 **Authentication:**
 ```bash
-source ~/.env
-AUTH=$(echo -n "${GONG_API_KEY}:${GONG_API_SECRET}" | base64)
+source ~/.zshrc 2>/dev/null; source ~/.env 2>/dev/null
+AUTH=$(echo -n "${GONG_ACCESS_KEY}:${GONG_ACCESS_SECRET}" | base64)
 ```
 
 **2a: Get calls in date range:**
@@ -305,7 +294,7 @@ curl -s -X POST "${GONG_BASE_URL:-https://us-55616.api.gong.io}/v2/calls/ai-cont
 
 **List recent meetings:**
 ```bash
-source ~/.env && curl -s "https://api.fathom.ai/external/v1/meetings?created_after=$(date -v-{DAYS}d +%Y-%m-%dT00:00:00Z)" \
+source ~/.zshrc 2>/dev/null; source ~/.env 2>/dev/null && curl -s "https://api.fathom.ai/external/v1/meetings?created_after=$(date -v-{DAYS}d +%Y-%m-%dT00:00:00Z)" \
   -H "X-Api-Key: $FATHOM_API_KEY"
 ```
 
@@ -1034,7 +1023,7 @@ Collect all gaps logged throughout the analysis. Deduplicate and prioritize.
 
 ## Step 7: Generate Layered Report
 
-Save to: `{portfolio_path}/deliverables/strategic-analysis-{YYYY-MM-DD}.md`
+Save to: `outputs/strategic-analysis-{YYYY-MM-DD}.md` (standalone repo mode) or `{portfolio_path}/deliverables/strategic-analysis-{YYYY-MM-DD}.md` (portfolio mode)
 
 ### Layer 1: Executive Summary (Shallow Dive)
 
@@ -1327,7 +1316,9 @@ Save to: `{portfolio_path}/knowledge/icp-from-analysis-{YYYY-MM-DD}.md`
 
 ## Step 9: Google Doc Export
 
-**Skip if `--skip-gdoc` is set.**
+**Skip this step in standalone repo mode.** Google Doc export requires the gws CLI which is not included in this repo. The markdown report saved in Step 8 is the final output.
+
+**Skip if `--skip-gdoc` is set (default in this repo).**
 
 ### 9a: Convert Report to HTML
 
@@ -1389,7 +1380,7 @@ curl -s -X POST "https://www.googleapis.com/upload/drive/v3/files?uploadType=mul
 
 Extract the `id` from the response. The Google Doc URL is: `https://docs.google.com/document/d/{id}/edit`
 
-If the upload fails (expired token, missing credentials), keep the .md file and say: "Google Doc creation failed. The markdown report is saved at {path}. To create the Google Doc manually, ask James to re-authenticate: `gws-reauth work`."
+If the upload fails (expired token, missing credentials), keep the .md file and say: "Google Doc creation failed (this is expected in standalone repo mode). The markdown report is saved at {path}."
 
 ---
 
@@ -1432,7 +1423,7 @@ If the upload fails (expired token, missing credentials), keep the .md file and 
 | Field not found | Skip dimension, note in data gaps |
 | HubSpot rate limit | Wait 100ms between requests, retry with backoff |
 | SOQL too long | Split into multiple queries |
-| Google Doc upload fails | Keep .md, warn, suggest `gws-reauth work` |
+| Google Doc upload fails | Keep .md, warn (expected in standalone mode) |
 | Segment <3 deals | Include but flag "Small sample (N={count})" |
 | Free text loss reasons | Cluster via Claude, present for confirmation |
 | Snowflake MCP unavailable | Disable enrichment, note in data gaps |
@@ -1446,7 +1437,7 @@ If the upload fails (expired token, missing credentials), keep the .md file and 
 
 1. **Connect Salesforce:**
    ```bash
-   sf org login web --alias {name_lower}@telescopepartners.com
+   sf org login web --alias my-org --set-default
    ```
 
 2. **Add to companies.json:**
@@ -1454,18 +1445,15 @@ If the upload fails (expired token, missing credentials), keep the .md file and 
    "{CompanyName}": {
      "crm": {
        "type": "salesforce",
-       "sf_org": "{name_lower}@telescopepartners.com",
+       "sf_org": "my-org",
        "field_mapping": "auto"
      },
      "call_recorder": {
        "type": "gong"
      },
-     "portfolio_path": "/Users/jameswinter/My Drive/VSCode/Portfolio Companies OS/{CompanyName}",
+     "portfolio_path": "./",
      "interview_paths": {
-       "churn_interviews": "source-docs/churn-interviews/",
-       "market_research": "source-docs/",
-       "knowledge_files": [],
-       "gong_exports": "source-docs/gong-*.md"
+       "knowledge_files": []
      }
    }
    ```
@@ -1486,7 +1474,7 @@ If the upload fails (expired token, missing credentials), keep the .md file and 
      "call_recorder": {
        "type": "fathom"
      },
-     "portfolio_path": "/Users/jameswinter/My Drive/VSCode/Portfolio Companies OS/{CompanyName}",
+     "portfolio_path": "./",
      "interview_paths": {
        "churn_interviews": "",
        "market_research": "",
@@ -1500,7 +1488,7 @@ If the upload fails (expired token, missing credentials), keep the .md file and 
 
 ### Call Recorder Options
 
-- **Gong:** Set `GONG_API_KEY` and `GONG_API_SECRET` in `~/.env`
+- **Gong:** Set `GONG_ACCESS_KEY` and `GONG_ACCESS_SECRET` in `~/.env`
 - **Fathom:** Set `FATHOM_API_KEY` in `~/.env`
 - **Manual:** Set `"call_recorder": {"type": "manual"}` -- you'll be prompted to paste transcripts
 

@@ -1,97 +1,33 @@
 {
-  "Stay": {
-    "crm": {
-      "type": "salesforce",
-      "sf_org": "james_stay@telescopepartners.com",
-      "field_mapping": {
-        "deal_name": "Name",
-        "amount": "Amount",
-        "arr": "Estimated_ARR__c",
-        "mrr": "Est_MRR__c",
-        "true_arr": "True_ARR__c",
-        "close_date": "CloseDate",
-        "created_date": "CreatedDate",
-        "stage": "StageName",
-        "won_values": ["Closed Won"],
-        "lost_values": ["Closed Lost"],
-        "dq_values": ["Disqualified"],
-        "nurture_values": ["Nurture"],
-        "loss_reason": "Closed_Lost_Reason__c",
-        "loss_reason_detail": "Closed_Lost_Additional_Context__c",
-        "loss_reason_ai": "Closed_Lost_AI__c",
-        "won_reason_ai": "Closed_Won_AI__c",
-        "root_cause": "Root_Cause__c",
-        "competitor": "Lost_To__c",
-        "competitor_most_likely": "Most_Likely_lost_To__c",
-        "competitor_gong": "Gong__MainCompetitors__c",
-        "competitor_mentions": "Competitor_Mentions__c",
-        "product_gap": "Lost_Product_Gap_Reason__c",
-        "deal_source": "Deal_Source__c",
-        "deal_source_secondary": "Deal_Source_Secondary__c",
-        "vertical_or_industry": "Industry__c",
-        "deal_tier": "AccountTier2__c",
-        "deal_type": "Type",
-        "opportunity_segment": "Opportunity_Segment__c",
-        "employee_count": "Employees__c",
-        "subscriber_count": "Number_of_Active_Subscribers__c",
-        "current_provider": "Current_Subscription_Provider__c",
-        "contract_type": "Contract_Type__c",
-        "owner": "OwnerId",
-        "account_name": "Account.Name",
-        "description": "Description",
-        "additional_details": "Additional_Details__c",
-        "the_gap": "The_Gap__c",
-        "current_state": "Current_State__c",
-        "future_state": "Future_State__c",
-        "budget": "Budget__c",
-        "dq_details": "DQ_Details__c",
-        "next_step": "NextStep",
-        "gong_call_count": "Gong__Gong_Count__c",
-        "last_stage_change": "LastStageChangeDate",
-        "stage_date_fields": {
-          "pre_qualification": "Date_Entered_Pre_Qualification__c",
-          "discovery": "Date_Entered_Discovery__c",
-          "solution_validation": "Date_Entered_Solution_Validation__c",
-          "proposal": "Date_Entered_Proposal__c",
-          "verbal": "Date_Entered_Verbal__c",
-          "closed_won": "Date_Entered_Closed_Won__c",
-          "closed_lost": "Date_Entered_Closed_Lost__c",
-          "disqualified": "Date_Entered_Disqualified__c",
-          "nurture": "Date_Entered_Nurture__c"
+  "_instructions": "This file stores CRM and call recording configuration for the strategic-analysis skill. The /aeo-master skill will prompt you for CRM details and populate this file automatically. You can also edit it manually if you prefer.",
+  "_example": {
+    "YourCompany": {
+      "crm": {
+        "type": "salesforce or hubspot",
+        "sf_org": "your-salesforce-org-alias (if Salesforce)",
+        "field_mapping": {
+          "deal_name": "Name",
+          "amount": "Amount",
+          "close_date": "CloseDate",
+          "stage": "StageName",
+          "won_values": ["Closed Won"],
+          "lost_values": ["Closed Lost"],
+          "loss_reason": "Loss_Reason__c",
+          "competitor": "Competitor__c",
+          "vertical_or_industry": "Industry",
+          "owner": "OwnerId",
+          "account_name": "Account.Name"
         }
+      },
+      "call_recorder": {
+        "type": "gong or fathom or none",
+        "gong_filter": null
+      },
+      "portfolio_path": "./",
+      "interview_paths": {
+        "knowledge_files": []
       }
-    },
-    "call_recorder": {
-      "type": "gong",
-      "base_url": "https://us-11413.api.gong.io",
-      "access_key": "4OLAJBWD5VLJ2ZTWCAUTG74FEJ4WOVFP",
-      "access_key_secret": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjIwOTI2ODE4MTYsImFjY2Vzc0tleSI6IjRPTEFKQldENVZMSjJaVFdDQVVURzc0RkVKNFdPVkZQIn0.RWCygC8aAjHcZwLmPKEU5WwA-Rn-YzrdGyVIiY_hOAc",
-      "gong_filter": null
-    },
-    "portfolio_path": "/Users/jameswinter/My Drive/VSCode/Portfolio Companies OS/Stay",
-    "interview_paths": {
-      "churn_interviews": "source-docs/churn-interviews/",
-      "market_research": "source-docs/Market Refresh/",
-      "knowledge_files": [
-        "knowledge/closed-lost-analysis.md",
-        "knowledge/market-research-calls.md",
-        "knowledge/competitive-landscape.md"
-      ],
-      "gong_exports": "source-docs/gong-prospect-trends-*.md"
-    },
-    "account_retention_fields": {
-      "tier": "Account_Tier__c",
-      "status": "Customer_Status__c",
-      "arr": "Projected_ARR__c",
-      "mrr": "MRR_del__c",
-      "live_date": "Go_Live_Date__c",
-      "churn_date": "Churn_Date__c",
-      "churn_arr": "ARR_at_Churn__c",
-      "churn_reason": "Churned_Reason__c",
-      "churned_to": "New_Subscription_Vendor__c",
-      "health": "Account_Health__c",
-      "previous_platform": "Previous_Subscription_Platform__c",
-      "active_subs": "Active_Subs__c"
     }
-  }
+  },
+  "companies": {}
 }

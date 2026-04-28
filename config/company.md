@@ -33,6 +33,14 @@ If you know which industries or company types you win most, list them. Include w
 - [Vertical 1] — [win rate if known, e.g., "89%"]
 - [Vertical 2]
 
+## Current Initiatives (Optional)
+Is there a website refresh, rebrand, product launch, or other initiative underway? This helps align the roadmap timeline.
+- [e.g., "Website refresh with Agency X, launching in 8 weeks"]
+
+## Primary GTM Motion (Optional)
+How do you primarily acquire customers?
+- [e.g., "Inbound marketing + partner referrals", "Outbound sales-led", "Product-led growth"]
+
 ## Known Buyer Objections (Optional)
 What do prospects push back on most? These help prioritize content gaps.
 - [Objection 1, e.g., "Migration risk — worried about losing subscribers during switch"]
