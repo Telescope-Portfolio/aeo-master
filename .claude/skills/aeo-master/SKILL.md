@@ -233,11 +233,30 @@ Compile all prompts from Query 5 where `brand_presence_percentage` = 0 or effect
 
 ## Phase 5: Strategic Layer
 
-Without CRM or Gong data, use these generic buyer question frameworks to build the priority questions list. Map company differentiators and objections from the config to specific question types.
+This phase builds the priority question list and content specs. The quality of this phase depends heavily on whether the user filled in the "Competitive Win/Loss Data" section of `config/company.md`.
 
-### Buyer Question Templates
+### 5a. Check for strategic data in config
 
-Generate priority questions by applying the company's context to these templates:
+Read the optional sections of `config/company.md`:
+- **Win Rates by Segment** — If filled in, use to prioritize which verticals get content first. Higher win-rate verticals = higher-priority content.
+- **Top Reasons You Lose Deals** — If filled in with percentages, each loss reason becomes a high-priority Fear or Evaluation question. The percentage determines ranking (44% of losses > 12% of losses).
+- **Top Reasons You Win Deals** — If filled in, these become the "Where the company wins" section in every content spec and the proof points in comparison pages.
+- **Buyer Language** — If filled in, use these exact phrases in content specs (opening paragraphs, H2s, comparison page language). This is the single most valuable field in the config.
+- **Competitor Displacement** — If filled in, use to frame comparison content and migration guides.
+
+If none of these optional sections are filled in, note this in the output:
+
+> "The strategic layer of this report uses generic buyer question templates because no win/loss data was provided. To significantly improve the priority rankings and content specs, fill in the 'Competitive Win/Loss Data' section of config/company.md with data from your CRM or sales team, then re-run `/aeo-master`."
+
+### 5b. Build priority questions
+
+**If strategic data is available from config**, map it directly:
+- Each competitive loss reason becomes a high-priority question. Example: "Analytics/reporting depth — 44% of losses" becomes the question "How does [Company]'s analytics compare to [Competitor]?" at high priority.
+- Win reasons become the differentiators used in content specs and honest concession language.
+- Buyer language quotes go into content opening paragraphs and become the phrasing for Scrunch tracking prompts.
+- Win rates by segment determine which vertical pages get Tier 1 priority.
+
+**If no strategic data is available**, generate priority questions from templates:
 
 **Evaluation questions:**
 - "Best [category] for [vertical/use case]" (one per vertical from config)
@@ -264,14 +283,15 @@ Generate priority questions by applying the company's context to these templates
 - "How to set up [category] for [use case]"
 - "What does onboarding look like with [Company]?"
 
-### Ranking Criteria
+### 5c. Ranking Criteria
 
 Rank questions by:
-1. **Purchase intent** (Fear and Process questions close deals; Evaluation questions build pipeline; Outcome questions build authority)
-2. **AI encounter likelihood** (Is this a query someone would type into ChatGPT/Perplexity? Not all questions are AI queries.)
-3. **Current visibility gap** (Cross-reference with Scrunch zero-visibility prompts)
-4. **Competitive urgency** (Is a competitor already winning this query?)
-5. **Brand credibility** (Does the company have evidence, data, or product features that make them the right answer?)
+1. **Revenue impact** (If loss reason percentages are available, use them as the primary ranking signal. "44% of losses cite analytics" outranks "12% cite pricing.")
+2. **Purchase intent** (Fear and Process questions close deals; Evaluation questions build pipeline; Outcome questions build authority)
+3. **AI encounter likelihood** (Is this a query someone would type into ChatGPT/Perplexity?)
+4. **Current visibility gap** (Cross-reference with Scrunch zero-visibility prompts)
+5. **Competitive urgency** (Is a competitor already winning this query based on Scrunch data?)
+6. **Brand credibility** (Does the company have evidence, data, or product features that make them the right answer?)
 
 Produce:
 - **Top 8 high-priority questions** with intent type and rationale

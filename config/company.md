@@ -38,3 +38,34 @@ What do prospects push back on most? These help prioritize content gaps.
 - [Objection 1, e.g., "Migration risk — worried about losing subscribers during switch"]
 - [Objection 2]
 - [Objection 3]
+
+## Competitive Win/Loss Data (Optional but Strongly Recommended)
+This data makes the output dramatically better. If you have access to your CRM or sales team, fill in what you can. Even rough numbers help.
+
+### Win Rates by Segment
+What types of deals do you win most? Include the segment and approximate win rate.
+- [Segment 1, e.g., "Health & wellness brands"] — [win rate, e.g., "89%"]
+- [Segment 2] — [win rate]
+- [Segment 3] — [win rate]
+
+### Top Reasons You Lose Deals
+Why do deals go to competitors? List the top 3-5 reasons with approximate percentages if known.
+- [Loss reason 1, e.g., "Analytics/reporting depth — competitor has more advanced dashboards"] — [% of losses, e.g., "44%"]
+- [Loss reason 2] — [%]
+- [Loss reason 3] — [%]
+
+### Top Reasons You Win Deals
+What do customers say made them choose you? List the top 3-5 reasons.
+- [Win reason 1, e.g., "Dedicated CSM from day one — not just a ticket queue"]
+- [Win reason 2]
+- [Win reason 3]
+
+### Buyer Language (Optional)
+Actual phrases your prospects use on sales calls. These go directly into content specs. The closer to verbatim, the better.
+- [Quote 1, e.g., "We're worried about what happens to our active subscribers during the migration"]
+- [Quote 2, e.g., "Why is this more expensive than Recharge?"]
+- [Quote 3]
+
+### Competitor Displacement
+Which competitor are prospects most often switching FROM? What do they complain about?
+- [Competitor name] — [what prospects say about them, e.g., "Recharge — support is slow, cancel flows are basic, no dedicated CSM"]
