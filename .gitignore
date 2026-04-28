@@ -1,0 +1,16 @@
+# Outputs (generated reports)
+outputs/*.md
+!outputs/.gitkeep
+
+# API keys and secrets
+.env
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude Code session data
+.claude/sessions/
+.claude/plans/
+.claude/file-history/
