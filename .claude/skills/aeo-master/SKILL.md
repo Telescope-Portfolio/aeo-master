@@ -1,10 +1,49 @@
 # AEO Master Document Generator
 
-Produces a 16-section Answer Engine Optimization master document for the configured company. Pulls Scrunch AI visibility data, scrapes the company website via Firecrawl, cross-references content gaps with zero-visibility prompts, and outputs a prioritized action plan sized to the team.
+Produces a 16-section Answer Engine Optimization master document for the configured company. Pulls CRM deal data and call transcripts via `/strategic-analysis`, Scrunch AI visibility data, and Firecrawl site audit. Cross-references content gaps with zero-visibility prompts and grounds every recommendation in actual win/loss data and buyer language.
 
 ## Trigger
 
 Invoke with `/aeo-master`. No arguments needed. Reads company config from `config/company.md` in the project root.
+
+## Prerequisite Skills
+
+This skill depends on the **strategic-analysis** skill (bundled at `.claude/skills/strategic-analysis/SKILL.md`). The strategic-analysis skill pulls CRM data (Salesforce or HubSpot) and call transcripts (Gong or Fathom) to produce win rates, loss reasons, buyer language, and competitive intelligence. That data feeds directly into the AEO master document's priority rankings and content specs.
+
+---
+
+## Phase 0: Strategic Analysis (Prerequisite)
+
+Before running the AEO audit and Scrunch pull, check whether strategic analysis data already exists.
+
+### 0a. Check for existing strategic analysis
+
+Look for `outputs/strategic-analysis-*.md` or `outputs/win-loss-*.md`. If found, read and extract:
+- Win rates by segment/vertical (with percentages)
+- Top competitive loss reasons (with percentages)
+- Top win reasons
+- Buyer language patterns from call transcripts (exact quotes)
+- Competitor displacement data (who prospects are switching from, what they complain about)
+- Deal velocity by segment
+- Churn/retention data if available
+
+Store all of this for use in Phase 5.
+
+### 0b. If no strategic analysis exists
+
+Tell the user:
+
+> "No strategic analysis found. Running `/strategic-analysis` first to pull your CRM and call recording data. This gives us win rates, loss reasons, and actual buyer language, which makes the AEO report dramatically more specific.
+>
+> I need to know:
+> 1. Which CRM do you use? (Salesforce or HubSpot)
+> 2. Which call recording tool? (Gong, Fathom, or neither)
+>
+> If you don't have CRM or call recording access, I can skip this step and use the manual data from config/company.md instead."
+
+If the user provides CRM and call recording details, invoke the `/strategic-analysis` skill. Wait for it to complete and save its output to `outputs/`. Then read the output and extract the data listed in 0a.
+
+If the user says to skip, proceed without it. The manual "Competitive Win/Loss Data" fields in `config/company.md` will be used as the fallback in Phase 5.
 
 ---
 
@@ -233,30 +272,28 @@ Compile all prompts from Query 5 where `brand_presence_percentage` = 0 or effect
 
 ## Phase 5: Strategic Layer
 
-This phase builds the priority question list and content specs. The quality of this phase depends heavily on whether the user filled in the "Competitive Win/Loss Data" section of `config/company.md`.
+This phase builds the priority question list and content specs using data from Phase 0 (strategic analysis). This is where the report goes from "generic AEO audit" to "revenue-linked action plan."
 
-### 5a. Check for strategic data in config
+### 5a. Check for strategic data
 
-Read the optional sections of `config/company.md`:
-- **Win Rates by Segment** — If filled in, use to prioritize which verticals get content first. Higher win-rate verticals = higher-priority content.
-- **Top Reasons You Lose Deals** — If filled in with percentages, each loss reason becomes a high-priority Fear or Evaluation question. The percentage determines ranking (44% of losses > 12% of losses).
-- **Top Reasons You Win Deals** — If filled in, these become the "Where the company wins" section in every content spec and the proof points in comparison pages.
-- **Buyer Language** — If filled in, use these exact phrases in content specs (opening paragraphs, H2s, comparison page language). This is the single most valuable field in the config.
-- **Competitor Displacement** — If filled in, use to frame comparison content and migration guides.
+Strategic data comes from three sources, checked in priority order:
 
-If none of these optional sections are filled in, note this in the output:
+1. **Phase 0 output** (best) — `/strategic-analysis` ran and produced win rates, loss reasons with percentages, buyer language from call transcripts, and competitive intelligence. Use this.
+2. **config/company.md manual fields** (good) — User filled in the "Competitive Win/Loss Data" section manually. Use this if Phase 0 didn't run.
+3. **Neither** (fallback) — No strategic data at all. Use generic buyer question templates and flag this prominently in the output.
 
-> "The strategic layer of this report uses generic buyer question templates because no win/loss data was provided. To significantly improve the priority rankings and content specs, fill in the 'Competitive Win/Loss Data' section of config/company.md with data from your CRM or sales team, then re-run `/aeo-master`."
+### 5b. Build priority questions with strategic data
 
-### 5b. Build priority questions
+**If strategic analysis or manual config data is available**, map it directly:
 
-**If strategic data is available from config**, map it directly:
-- Each competitive loss reason becomes a high-priority question. Example: "Analytics/reporting depth — 44% of losses" becomes the question "How does [Company]'s analytics compare to [Competitor]?" at high priority.
-- Win reasons become the differentiators used in content specs and honest concession language.
-- Buyer language quotes go into content opening paragraphs and become the phrasing for Scrunch tracking prompts.
-- Win rates by segment determine which vertical pages get Tier 1 priority.
+- **Each competitive loss reason becomes a high-priority question.** The percentage determines ranking. "Analytics/reporting depth at 44% of losses" outranks "pricing at 12% of losses." Each loss reason maps to a specific content piece in the production plan.
+- **Win reasons become the proof points in every content spec.** These are the "Where the company wins" sections on comparison pages and the differentiators in educational content.
+- **Buyer language quotes go directly into content specs.** Exact phrasing from call transcripts becomes the opening paragraphs, the H2 headings, and the Scrunch tracking prompts. This is the single most valuable data point for content that actually gets cited.
+- **Win rates by segment determine vertical content priority.** 89% win rate in health & wellness means that vertical page gets Tier 1 priority over a vertical with 50% win rate.
+- **Competitor displacement data frames comparison content.** If 60% of prospects are switching from a specific competitor, that comparison page is Tier 1.
+- **Churn/retention data feeds Fear-intent content.** If billing reliability is the #1 churn driver, the content plan includes proactive reliability messaging.
 
-**If no strategic data is available**, generate priority questions from templates:
+**If no strategic data is available at all**, generate priority questions from templates:
 
 **Evaluation questions:**
 - "Best [category] for [vertical/use case]" (one per vertical from config)
