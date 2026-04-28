@@ -59,7 +59,7 @@ Open `config/company.md` and fill in the blanks. At minimum you need:
 - Your Scrunch workspace ID (find it in your Scrunch dashboard under Settings > API)
 - 3-5 specific differentiators (not "great product" but "dedicated CSM from day one" or "94% payment recovery rate")
 
-The optional sections (verticals, buyer objections) make the output significantly better if you fill them in.
+The optional sections (verticals, buyer objections, win/loss data) make the output significantly better. In particular, the "Competitive Win/Loss Data" section is where you add win rates by segment, top loss reasons with percentages, and actual buyer language from sales calls. This is what turns the content production plan from generic recommendations into specific, revenue-linked specs. If your sales team can give you 15 minutes, fill this section in.
 
 **4. Run it**
 
@@ -83,7 +83,7 @@ About 15-20 minutes. Most of that time is spent on the Firecrawl site scrape (au
 
 A few things to know going in:
 
-- **No CRM integration.** The skill doesn't pull from Salesforce, HubSpot, or Gong. It works with your website content and Scrunch monitoring data. If you have win/loss data or call recordings, you can add insights from those to the config file manually.
+- **No direct CRM or call recording integration.** The skill doesn't connect to Salesforce, HubSpot, or Gong directly. But the config file has an optional "Competitive Win/Loss Data" section where you can add win rates, loss reasons, buyer language, and competitor intel from your own sales data. Filling this in makes the priority rankings and content specs dramatically more specific. If you skip it, you'll get a solid report based on your site and Scrunch data, but the strategic recommendations will be more generic.
 - **No automated content writing.** The output tells you what to write, with detailed specs. It doesn't write the content for you.
 - **No Google Doc export.** Output is a markdown file in the `outputs/` folder. Copy it into Google Docs, Notion, or wherever your team works.
 - **No historical trending.** The report is a point-in-time snapshot. Run it monthly to track progress.
