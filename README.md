@@ -38,39 +38,16 @@ Without CRM and call recording data, the report still works (site audit + Scrunc
 
 ## Setup
 
-**1. Clone the repo**
+See **[docs/setup-guide.md](docs/setup-guide.md)** for the full step-by-step walkthrough. It covers everything from installing Claude Code to configuring your CRM and call recording integrations.
+
+**Quick version if you already have Claude Code running:**
 
 ```bash
 git clone https://github.com/Telescope-Portfolio/aeo-master.git
 cd aeo-master
 ```
 
-**2. Set your API keys**
-
-```bash
-export SCRUNCH_API_TOKEN="your-scrunch-api-key"
-export FIRECRAWL_API_KEY="your-firecrawl-api-key"
-```
-
-If you use Firecrawl as an MCP server in Claude Code instead of the CLI, that works too.
-
-**3. Fill out your company config**
-
-Open `config/company.md` and fill in the blanks. At minimum you need:
-- Company name and website URL
-- 2-4 competitors with one-line descriptions
-- Your Scrunch workspace ID (find it in your Scrunch dashboard under Settings > API)
-- 3-5 specific differentiators
-
-The "Competitive Win/Loss Data" section at the bottom is optional if you have CRM/call recording access (the skill will pull that data automatically). If you don't have CRM access, fill in this section manually with what you know from your sales team. Even rough numbers make the output better.
-
-**4. Run it**
-
-```
-/aeo-master
-```
-
-The skill will ask which CRM and call recording tool you use, pull your strategic data, scrape your site, pull Scrunch visibility data, and produce the report.
+Fill out `config/company.md`, then open the project in Claude Code and run `/aeo-master`.
 
 ## Example Output
 
