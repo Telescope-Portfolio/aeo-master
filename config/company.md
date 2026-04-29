@@ -19,8 +19,8 @@ List your top 2-4 competitors. These will be tracked in the AI visibility analys
 - **Key roles:** [e.g., VP Marketing, PMM, Content Manager, Demand Gen]
 
 ## Scrunch Configuration
-Get these from your Scrunch dashboard (Settings > API).
-- **Workspace ID:** [your Scrunch workspace ID number]
+If you already have Scrunch set up, enter your workspace ID. If not, leave this blank and the skill will set up Scrunch for you automatically (you just need a Scrunch API token).
+- **Workspace ID:** [leave blank if not set up yet, or enter your Scrunch workspace ID number]
 
 ## Key Differentiators
 What makes your product different? List 3-5 specific things (not generic claims like "best support" — say "dedicated CSM assigned from day one" or "AI-powered churn prediction with 28% average reduction").

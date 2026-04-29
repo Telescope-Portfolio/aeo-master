@@ -27,7 +27,7 @@ The output is a single markdown document with these sections:
 
 **Required:**
 - **Claude Code** installed and working on your machine
-- **A Scrunch account** with your brand configured, competitors added, and prompts being tracked. If you don't have Scrunch set up yet, talk to your investor or Scrunch rep.
+- **A Scrunch account** with an API token. You don't need to configure prompts yourself. If your brand isn't set up in Scrunch yet, the skill handles the full configuration automatically (brand creation, competitors, personas, 40-70 strategic prompts). Just have the API token ready.
 - **A Firecrawl API key** for website scraping. Sign up at [firecrawl.dev](https://firecrawl.dev).
 
 **Strongly recommended:**
@@ -62,4 +62,4 @@ See `examples/stay-aeo-master.md` for a real report produced for a Shopify subsc
 - **No automated content writing.** The output tells you what to write, with detailed specs. It doesn't write the content for you.
 - **No Google Doc export.** Output is a markdown file in the `outputs/` folder. Copy it into Google Docs, Notion, or wherever your team works.
 - **No historical trending.** The report is a point-in-time snapshot. Run it monthly to track progress.
-- **Not a substitute for Scrunch setup.** You need prompts configured in Scrunch before this skill has data to work with.
+- **Scrunch account required.** You need a Scrunch account and API token. But you don't need to set up prompts yourself. If Scrunch isn't configured yet, the skill runs `/scrunch-setup` automatically to create your brand, add competitors, and generate 40-70 strategic prompts.

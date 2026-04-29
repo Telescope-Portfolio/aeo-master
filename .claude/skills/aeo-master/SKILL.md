@@ -60,20 +60,37 @@ Read `config/company.md` from the project root. Extract these variables:
 | `competitors` | Competitors section (list of name + description pairs) | Yes (at least 1) |
 | `team_size` | Team > Marketing team size | Yes |
 | `team_roles` | Team > Key roles | Yes |
-| `scrunch_workspace_id` | Scrunch Configuration > Workspace ID | Yes |
+| `scrunch_workspace_id` | Scrunch Configuration > Workspace ID | No (skill will set up Scrunch if missing) |
 | `differentiators` | Key Differentiators (list) | Yes (at least 1) |
 | `verticals` | Top Verticals / Segments (list with optional win rates) | No |
 | `objections` | Known Buyer Objections (list) | No |
+| `current_initiative` | Current Initiatives | No |
+| `primary_gtm_motion` | Primary GTM Motion | No |
 
 ### Validation
 
 Stop and tell the user if any required field is missing or still has placeholder text (contains `[` brackets). Specifically check:
-- `scrunch_workspace_id` must be a number, not placeholder text
 - `website_url` must start with `http://` or `https://`
 - At least 1 competitor must be listed
 - At least 1 differentiator must be listed
 
 If validation fails, list exactly which fields need to be filled in and stop.
+
+### Scrunch check
+
+If `scrunch_workspace_id` is missing, empty, or still has placeholder text:
+
+1. Check if `outputs/scrunch-config.md` exists (from a previous `/scrunch-setup` run). If so, read the brand_id from it and use that.
+
+2. If no scrunch config exists, tell the user:
+
+> "Scrunch isn't set up yet. I'll configure it now using your company info from config/company.md. This creates your brand in Scrunch, adds competitors, generates 40-70 strategic prompts across 5 buyer journey stages, and pulls an initial baseline.
+>
+> You just need your `SCRUNCH_API_TOKEN` set as an environment variable. Do you have that ready?"
+
+If yes, invoke `/scrunch-setup`. The scrunch-setup skill reads from `config/company.md`, creates the brand and prompts, saves config to `outputs/scrunch-config.md`, and writes the workspace_id back to `config/company.md`. Then continue to Phase 2.
+
+If the user doesn't have a Scrunch account yet, stop and tell them to sign up at scrunch.ai and get an API token, then re-run `/aeo-master`.
 
 ---
 

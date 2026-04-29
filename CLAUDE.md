@@ -27,6 +27,7 @@ export FIRECRAWL_API_KEY="your-firecrawl-api-key"  # if using CLI, not MCP
 
 - **aeo-master** — The main skill. Orchestrates everything and produces the report.
 - **strategic-analysis** — Pulls CRM deal data and call transcripts to produce win rates, loss reasons, and buyer language. Runs automatically as a prerequisite.
+- **scrunch-setup** — Configures Scrunch AI visibility monitoring from scratch: creates brand, adds competitors, generates 40-70 strategic prompts, pulls baseline. Runs automatically if Scrunch isn't configured yet.
 
 ## Output
 

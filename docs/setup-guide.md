@@ -40,12 +40,13 @@ cd aeo-master
 
 ## Step 3: Set Up Scrunch (Required)
 
-Scrunch tracks your brand's visibility across AI platforms. You need a Scrunch account with your brand configured and prompts being tracked before running this skill.
+Scrunch tracks your brand's visibility across AI platforms. You need a Scrunch account, but you do NOT need to configure prompts or set up your brand manually. The skill does that for you.
 
 **Get your API token:**
-1. Log into your Scrunch dashboard
-2. Go to Settings > API
-3. Copy your API token
+1. Sign up at [scrunchai.com](https://scrunchai.com) if you don't have an account
+2. Log into your Scrunch dashboard
+3. Go to Settings > API
+4. Copy your API token
 
 **Set the environment variable.** Add this line to your shell profile (`~/.zshrc` on Mac):
 
@@ -55,6 +56,8 @@ source ~/.zshrc
 ```
 
 Replace `your-token-here` with your actual token.
+
+**That's it for Scrunch.** When you run `/aeo-master`, the skill checks if your brand is set up in Scrunch. If not, it automatically runs `/scrunch-setup` which creates your brand, adds your competitors, generates 40-70 strategic prompts across 5 buyer journey stages, and pulls an initial baseline. If you already have Scrunch configured, enter your workspace ID in `config/company.md` and the skill uses your existing data.
 
 ---
 
